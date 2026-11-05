@@ -12,7 +12,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
-MODEL_NAME = "workspace.sadiene2004_cicd.IrisRFModel"
+MODEL_NAME = "workspace.sadiene2004_cicd.irisrfmodel"
 
 
 def main(register_name=None, random_state=42):

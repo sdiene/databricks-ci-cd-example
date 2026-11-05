@@ -9,7 +9,7 @@ from mlflow.tracking import MlflowClient
 
 mlflow.set_registry_uri("databricks-uc")
 client = MlflowClient()
-MODEL_NAME = "workspace.sadiene2004_cicd.IrisRFModel"
+MODEL_NAME = "workspace.sadiene2004_cicd.irisrfmodel"
 
 versions = client.search_model_versions(f"name = '{MODEL_NAME}'")
 for v in sorted(versions, key=lambda v: int(v.version)):
