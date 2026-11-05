@@ -1,0 +1,39 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest tests/
+
+      - name: Install Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Check Databricks connection
+        run: databricks current-user me
+
+      - name: Upload notebooks to Databricks
+        run: |
+          databricks workspace import-dir notebooks "${{ secrets.DATABRICKS_WORKSPACE_PATH }}/notebooks" --overwrite
+
+      - name: Trigger Databricks job
+        run: databricks jobs run-now ${{ secrets.DATABRICKS_JOB_ID }}
